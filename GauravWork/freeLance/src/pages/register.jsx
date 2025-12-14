@@ -1,0 +1,166 @@
+import React from "react";
+
+export default function Register({ onClose, onSwitchToLogin }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // wire up your register logic here
+    alert("Registration submitted");
+  };
+
+
+  return (
+    <div className="min-h-screen flex bg-[#2E5049] md:bg-transparent">
+      {/* Left hero (Kept consistent with Login.jsx) */}
+      <div
+        className="hidden md:flex w-1/2 bg-cover bg-center items-center justify-start relative p-12"
+        style={{
+          backgroundImage: "url('/auth-bg.jpg')",
+          backgroundColor: "#2E5049",
+        }}
+      >
+        <div className="absolute inset-0 bg-black opacity-20" />
+        <div className="absolute top-12 left-12 z-10 flex items-center gap-2">
+          <div className="w-8 h-8 rounded-md bg-black/75 flex items-center justify-center text-white font-bold text-lg">
+            Be
+          </div>
+          <h2 className="text-white text-3xl font-semibold tracking-tight">Tasklance</h2>
+        </div>
+        <div className="absolute bottom-12 left-12 z-10">
+          <p className="text-white text-sm">
+            Aic: Wiry poor
+            <br />
+            Now
+          </p>
+        </div>
+        <div className="absolute bottom-12 right-12 z-10 flex gap-4">
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center cursor-pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-gray-700">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"/>
+            </svg>
+          </div>
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center cursor-pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-gray-700">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Right form container */}
+      <div className="flex-1 flex items-center justify-center p-8">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-2xl p-10 relative">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+
+          <h1 className="text-xl font-bold text-gray-800 mb-6">Create your Tasklance account</h1>
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Continue with Google Button */}
+            <button
+              type="button"
+              className="w-full border border-gray-300 rounded-md py-2 px-4 flex items-center gap-3 justify-center hover:bg-gray-50 transition"
+            >
+              <img src="https://www.svgrepo.com/show/355037/google.svg" alt="google" className="w-5 h-5" />
+              <span className="text-sm font-medium">Continue with Google</span>
+            </button>
+
+            {/* Continue with Facebook Button */}
+            <button
+              type="button"
+              className="w-full border border-gray-300 rounded-md py-2 px-4 flex items-center gap-3 justify-center hover:bg-gray-50 transition"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+              <span className="text-sm font-medium">Continue with Facebook</span>
+            </button>
+
+            {/* Separator */}
+            <div className="my-6 flex items-center">
+              <div className="flex-1 h-px bg-gray-200" />
+              <div className="px-3 text-sm text-gray-400">Or</div>
+              <div className="flex-1 h-px bg-gray-200" />
+            </div>
+
+            {/* Name Fields */}
+            <div className="flex gap-4">
+              <div className="w-1/2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">First name</label>
+                <input
+                  type="text"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2.5 text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none"
+                  required
+                />
+              </div>
+              <div className="w-1/2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+                <input
+                  type="text"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2.5 text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Email Field */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+              <input
+                type="email"
+                className="w-full border border-gray-300 rounded-md px-3 py-2.5 text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none"
+                required
+              />
+            </div>
+
+            {/* Password Field */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input
+                type="password"
+                className="w-full border border-gray-300 rounded-md px-3 py-2.5 text-base focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none"
+                required
+              />
+            </div>
+            
+            {/* Terms and Conditions Checkbox */}
+            <div className="pt-2">
+              <label className="flex items-start gap-2 text-sm cursor-pointer">
+                <input type="checkbox" className="h-4 w-4 mt-1 text-blue-600 rounded border-gray-300 focus:ring-blue-500" required />
+                <span className="text-gray-600">
+                  I agree yeaa the Behance Terms of Use and{" "}
+                  <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
+                </span>
+              </label>
+            </div>
+
+            {/* Create Account Button */}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2.5 rounded-md font-semibold hover:bg-blue-700 transition mt-6"
+            >
+              Create Account
+            </button>
+          </form>
+
+          {/* Already have an account link */}
+          <div className="text-center mt-5">
+            <p className="text-sm text-gray-500">
+              Already have an account?{" "}
+              <button 
+                onClick={onSwitchToLogin} 
+                className="text-blue-600 font-medium hover:underline focus:outline-none"
+              >
+                Sign in
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
