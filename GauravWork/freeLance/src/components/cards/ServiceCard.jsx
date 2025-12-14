@@ -8,6 +8,7 @@ export default function ServiceCard({ data }) {
       <div className="text-xs text-gray-500 mt-3 flex justify-between">
         <span>{data.author}</span>
         <span>{data.country}</span>
+        <span>{data.category}</span>
       </div>
     </div>
   );

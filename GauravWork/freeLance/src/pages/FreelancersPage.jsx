@@ -3,34 +3,22 @@ import ServiceCard from "../components/cards/ServiceCard";
 
 export default function FreelancersPage() {
   const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/services")
-      .then(res => res.json())
-      .then(data => {
-        setServices(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+    // ✅ yahin use hota hai
+    console.log("API URL:", import.meta.env.VITE_API_URL);
 
-  if (loading) {
-    return <p className="text-center mt-10">Loading services...</p>;
-  }
+    fetch(`${import.meta.env.VITE_API_URL}/api/services`)
+      .then(res => res.json())
+      .then(data => setServices(data))
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      {services.length === 0 ? (
-        <p>No services found</p>
-      ) : (
-        services.map(service => (
-          <ServiceCard key={service._id} data={service} />
-        ))
-      )}
+      {services.map(service => (
+        <ServiceCard key={service._id} data={service} />
+      ))}
     </div>
   );
 }
