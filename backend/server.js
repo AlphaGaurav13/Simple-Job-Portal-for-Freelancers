@@ -134,14 +134,36 @@ connectDB()
 // ================================================
 
 // 1. CORS - Manual implementation (instead of cors package)
+// 1. CORS - Manual implementation (instead of cors package)
 // This middleware adds CORS headers to responses
 app.use(function (req, res, next) {
-    // Allowed origins
+    // Allowed origins defined in environment variable (comma separated) or defaults
     var allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
+
+    // Add production frontend URL if defined
+    if (process.env.FRONTEND_URL) {
+        allowedOrigins.push(process.env.FRONTEND_URL);
+        // Also allow without https if needed or multiple URLs
+        var envOrigins = process.env.FRONTEND_URL.split(',');
+        envOrigins.forEach(function (url) {
+            if (url.trim() && allowedOrigins.indexOf(url.trim()) === -1) {
+                allowedOrigins.push(url.trim());
+            }
+        });
+    }
+
     var origin = req.headers.origin;
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
+    // Allow all origins if in development or if origin is allowed
+    // For simplicity in this specific deployment case, we check if it's in the list
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    } else {
+        // Optional: Allow the deployed frontend even if not explicitly in list (be careful with this in stricter envs)
+        // Check if origin ends with .onrender.com
+        if (origin && origin.endsWith('.onrender.com')) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+        }
     }
 
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -184,7 +206,24 @@ app.use(session({
 
 var io = new Server(server, {
     cors: {
-        origin: ['http://localhost:5173', 'http://localhost:3000'],
+        origin: function (origin, callback) {
+            var allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+            if (process.env.FRONTEND_URL) {
+                var envOrigins = process.env.FRONTEND_URL.split(',');
+                envOrigins.forEach(function (url) {
+                    allowedOrigins.push(url.trim());
+                });
+            }
+
+            // Allow requests with no origin (like mobile apps or curl requests)
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.onrender.com')) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
         methods: ['GET', 'POST'],
         credentials: true
     }
