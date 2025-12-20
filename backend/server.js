@@ -188,14 +188,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // 5. Session Middleware (ALLOWED - express-session)
+// Trust proxy is required for secure cookies behind Render's load balancer
+app.set('trust proxy', 1);
+
 app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret-key-dev-only',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production', // Must be true for sameSite: 'none'
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-site (Render), 'lax' for localhost
         maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days
     }
 }));
