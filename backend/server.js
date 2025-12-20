@@ -154,15 +154,24 @@ app.use(function (req, res, next) {
 
     var origin = req.headers.origin;
 
-    // Allow all origins if in development or if origin is allowed
-    // For simplicity in this specific deployment case, we check if it's in the list
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    // STAGE 1: Determine if this origin is allowed
+    var isAllowed = false;
+    if (origin) {
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            isAllowed = true;
+        } else if (origin.endsWith('.onrender.com')) {
+            isAllowed = true;
+        }
+    }
+
+    // STAGE 2: Set Origin Header
+    // IMPORTANT: Access-Control-Allow-Origin cannot be '*' when Credentials is true
+    if (isAllowed) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
     } else {
-        // Optional: Allow the deployed frontend even if not explicitly in list (be careful with this in stricter envs)
-        // Check if origin ends with .onrender.com
-        if (origin && origin.endsWith('.onrender.com')) {
-            res.setHeader('Access-Control-Allow-Origin', origin);
+        // Fallback for development if no origin header (some older tools)
+        if (!origin) {
+            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
         }
     }
 
@@ -195,10 +204,13 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret-key-dev-only',
     resave: false,
     saveUninitialized: false,
+    proxy: true, // Required for secure cookies behind proxy
     cookie: {
-        secure: process.env.NODE_ENV === 'production', // Must be true for sameSite: 'none'
+        // Force secure and sameSite: 'none' if we are not on localhost
+        // Render uses HTTPS by default, so we should use secure cookies
+        secure: true,
         httpOnly: true,
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-site (Render), 'lax' for localhost
+        sameSite: 'none',
         maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days
     }
 }));
