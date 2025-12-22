@@ -125,7 +125,7 @@ function initializeSocket(io) {
 
                 var messageToSend = {
                     _id: savedMessage._id,
-                    id: savedMessage._id,
+                    id: data.id || savedMessage._id, // Include original client ID for deduplication
                     senderId: savedMessage.senderId,
                     recipientId: savedMessage.recipientId,
                     text: savedMessage.text,

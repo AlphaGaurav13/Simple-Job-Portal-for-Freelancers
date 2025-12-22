@@ -120,8 +120,18 @@ function Messages() {
                 (message.senderId === selectedConversation.participant.id || message.senderId === user.id)) {
 
                 setMessages(function (prev) {
-                    const exists = prev.some(m => (m._id || m.id) === (message._id || message.id));
-                    if (exists) return prev;
+                    // Check if message already exists by ID or client-side temporary ID
+                    const exists = prev.some(m =>
+                        (m._id && (m._id === message._id)) ||
+                        (m.id && (m.id === message.id))
+                    );
+
+                    if (exists) {
+                        // If it exists, update the message with real DB data (like _id and final timestamp)
+                        return prev.map(m =>
+                            (m.id === message.id) ? { ...m, ...message, sender: message.senderId } : m
+                        );
+                    }
 
                     return [...prev, {
                         ...message,

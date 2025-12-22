@@ -458,17 +458,17 @@ function UserDashboard() {
                                         key={order.id}
                                         className="bg-white rounded-xl p-5 border border-neutral-200 hover:shadow-md transition-all"
                                     >
-                                        <div className="flex items-start justify-between mb-3">
-                                            <h3 className="font-medium text-neutral-900">{order.title}</h3>
-                                            <span className={'px-2 py-1 rounded text-xs font-medium ' + statusClass}>
+                                        <div className="flex items-start justify-between mb-3 gap-2">
+                                            <h3 className="font-medium text-neutral-900 flex-1 break-all line-clamp-2">{order.title}</h3>
+                                            <span className={'px-2 py-1 rounded text-xs font-medium shrink-0 ' + statusClass}>
                                                 {order.status}
                                             </span>
                                         </div>
 
                                         <div className="space-y-2 text-sm">
-                                            <div className="flex justify-between">
-                                                <span className="text-neutral-500">Order ID:</span>
-                                                <span className="text-neutral-900">{order.id}</span>
+                                            <div className="flex justify-between gap-4">
+                                                <span className="text-neutral-500 shrink-0">Order ID:</span>
+                                                <span className="text-neutral-900 truncate font-mono text-xs" title={order.id}>{order.id}</span>
                                             </div>
                                             <div className="flex justify-between">
                                                 <span className="text-neutral-500">Amount:</span>
