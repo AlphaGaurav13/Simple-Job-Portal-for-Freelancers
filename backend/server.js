@@ -200,17 +200,21 @@ app.use(cookieParser());
 // Trust proxy is required for secure cookies behind Render's load balancer
 app.set('trust proxy', 1);
 
+// Determine if we're in production based on NODE_ENV or BACKEND_URL
+const isProduction = process.env.NODE_ENV === 'production' || 
+                     (process.env.BACKEND_URL && process.env.BACKEND_URL.includes('https'));
+
 app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret-key-dev-only',
     resave: false,
     saveUninitialized: false,
-    proxy: true, // Required for secure cookies behind proxy
+    proxy: isProduction, // Required for secure cookies behind proxy in production
     cookie: {
-        // Force secure and sameSite: 'none' if we are not on localhost
-        // Render uses HTTPS by default, so we should use secure cookies
-        secure: true,
+        // In production: use secure cookies (HTTPS)
+        // In development: allow non-secure cookies (HTTP localhost)
+        secure: isProduction,
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days
     }
 }));

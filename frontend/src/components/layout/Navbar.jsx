@@ -88,8 +88,8 @@ function Navbar() {
                             to={isAuthenticated ? '/dashboard' : '/'}
                             className="text-2xl font-bold tracking-tight group"
                         >
-                            <span className="text-black">get</span>
-                            <span className="text-[#00f0ff] group-hover:text-[#ff69b4] transition-colors duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,105,180,0.6)]">Work</span>
+                            <span className="text-black">Career</span>
+                            <span className="text-[#00f0ff] group-hover:text-[#ff69b4] transition-colors duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,105,180,0.6)]">Connect</span>
                             <span className="text-[#00f0ff] group-hover:text-[#ff69b4] transition-colors duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,105,180,0.6)]">.</span>
                         </Link>
 
